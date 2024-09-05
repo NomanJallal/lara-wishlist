@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Inertia } from '@inertiajs/react';
+import { Inertia } from '@inertiajs/inertia';
 
 export default function Index({ wishlists }) {
     const [name, setName] = useState('');
