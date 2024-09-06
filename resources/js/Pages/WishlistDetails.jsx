@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import WishlistItems from "@/Components/WishlistItems";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import { Head, usePage } from "@inertiajs/react";
+import { FaRegHeart, FaStore, FaStoreSlash } from "react-icons/fa";
 
-function WishlistDetails({ auth, wishlist_detail }) {
+function WishlistDetails({ wishlist_detail }) {
     const { flash } = usePage().props;
     const { errors } = usePage().props;
     // State to manage the selected tab and its index
@@ -11,8 +12,7 @@ function WishlistDetails({ auth, wishlist_detail }) {
         Object.keys(wishlist_detail)[0]
     );
     return (
-        <AuthenticatedLayout
-            user={auth.user}
+        <AppLayout
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                     Wishlist Details
@@ -43,19 +43,31 @@ function WishlistDetails({ auth, wishlist_detail }) {
                                 <div className="flex space-x-4 border-b border-gray-200">
                                     {Object.values(wishlist_detail).map(
                                         (wishlist) => (
-                                            <button
-                                                key={wishlist.id}
-                                                onClick={() =>
-                                                    setSelectedTab(wishlist.id)
-                                                }
-                                                className={`py-2 px-4 text-sm font-medium ${
-                                                    selectedTab == wishlist.id
-                                                        ? "border-b-2 border-blue-500 text-blue-600"
-                                                        : "text-gray-500 hover:text-gray-700"
-                                                }`}
-                                            >
-                                                {wishlist.name}
-                                            </button>
+                                            <>
+                                                <button
+                                                    key={wishlist.id}
+                                                    onClick={() =>
+                                                        setSelectedTab(
+                                                            wishlist.id
+                                                        )
+                                                    }
+                                                    className={`py-2 px-4 text-sm font-medium ${
+                                                        selectedTab ==
+                                                        wishlist.id
+                                                            ? "border-b-2 border-blue-500 text-blue-600"
+                                                            : "text-gray-500 hover:text-gray-700"
+                                                    }`}
+                                                >
+                                                    <span className="flex">
+                                                        {!wishlist.is_active ? (
+                                                            <FaStoreSlash className="mt-1 mr-1" />
+                                                        ) : (
+                                                            <FaStore className="mt-1 mr-1" />
+                                                        )}
+                                                        {wishlist.name}{" "}
+                                                    </span>
+                                                </button>
+                                            </>
                                         )
                                     )}
                                 </div>
@@ -92,7 +104,7 @@ function WishlistDetails({ auth, wishlist_detail }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </AppLayout>
     );
 }
 

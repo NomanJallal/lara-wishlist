@@ -24,7 +24,7 @@ class ItemController extends Controller {
     public function index() {
         try {
             $items = $this->repository->with(['wishLists'])->all();
-            return Inertia('Items', ['items' => $items, 'wishlists' => $this->wishlistRepository->all()]);
+            return Inertia('Items', ['items' => $items, 'wishlists' => $this->wishlistRepository->where('is_active',true)->get()]);
         } catch (\Exception $e) {
             Log::error($e);
             return back()->withErrors(['error' => $e->getMessage()])->withStatus(422);
@@ -57,7 +57,7 @@ class ItemController extends Controller {
             if (!$item) {
                 throw new Exception("Item not found");
             }
-            $exists = $this->wishlistRepository->where('id', $wishlistId)->where('user_id', auth()->id())->whereHas('wishListItems',function($query) use ($itemId){
+            $exists = $this->wishlistRepository->where('id', $wishlistId)->whereHas('wishListItems',function($query) use ($itemId){
                 $query->where('item_id', $itemId);
             })->exists();
             if (!$exists) {

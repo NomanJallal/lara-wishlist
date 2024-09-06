@@ -1,11 +1,11 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AppLayout from "@/Layouts/AppLayout";
 import { router, Head, useForm, usePage } from "@inertiajs/react";
 import { useState } from "react";
-import { HiPencilAlt } from "react-icons/hi";
+import { HiBan, HiCheck, HiPencilAlt, HiXCircle } from "react-icons/hi";
 import WishlistModal from "../Components/WishlistModal.jsx";
 import ConfirmationModal from "../Components/ConfirmationModal.jsx";
 
-export default function WishLists({ auth, wishlists }) {
+export default function WishLists({ wishlists }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { data, setData, reset, clearErrors } = useForm({
         name: "",
@@ -41,10 +41,30 @@ export default function WishLists({ auth, wishlists }) {
             },
         });
     };
+    const changeWishlistStatus = (data) => {
+        const url = `/wishlist-change-status/${data.id}`;
+        router.post(url, {
+            onSuccess: () => {
+                // Swal.fire({
+                //     title: data.is_active ? "!Disabled" : "!Enabled",
+                //     text:
+                //         "Your wishlist has been " +
+                //         (data.is_active ? "disable" : "enabled"),
+                //     icon: "success",
+                // });
+            },
+            onError: (error) => {
+                // Swal.fire({
+                //     title: "Error!",
+                //     text: "There was a problem changing wishlist status.",
+                //     icon: "error",
+                // });
+            },
+        });
+    };
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
+        <AppLayout
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                     Wishlist
@@ -97,6 +117,26 @@ export default function WishLists({ auth, wishlists }) {
                                                     {item.name}
                                                 </td>
                                                 <td className="px-4 py-2 border-b text-center">
+                                                    {/* <button
+                                                        className="text-blue-500 hover:text-blue-700 mx-1"
+                                                        onClick={() =>
+                                                            changeWishlistStatus(
+                                                                item
+                                                            )
+                                                        }
+                                                    >
+                                                        {item.is_active ? (
+                                                            <HiBan
+                                                                size={20}
+                                                                className="text-red"
+                                                            />
+                                                        ) : (
+                                                            <HiCheck
+                                                                size={20}
+                                                                className="text-red"
+                                                            />
+                                                        )}
+                                                    </button> */}
                                                     <button
                                                         className="text-blue-500 hover:text-blue-700 mx-1"
                                                         onClick={() =>
@@ -134,6 +174,6 @@ export default function WishLists({ auth, wishlists }) {
                 onSubmit={storeWishlist}
                 errors={errors}
             />
-        </AuthenticatedLayout>
+        </AppLayout>
     );
 }

@@ -11,7 +11,7 @@ class Item extends Model {
     protected $guarded = [];
 
     public function wishLists() {
-        return $this->hasManyThrough(Wishlist::class, WishlistItem::class, 'item_id', 'id', 'id', 'wishlist_id');
+        return $this->hasManyThrough(Wishlist::class, WishlistItem::class, 'item_id', 'id', 'id', 'wishlist_id')->where('is_active',true);
     }
     public function wishListItems(){
         return $this->hasMany(WishlistItem::class);

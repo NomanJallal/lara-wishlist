@@ -1,16 +1,15 @@
 import WishlistItems from '@/Components/WishlistItems';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AppLayout from '@/Layouts/AppLayout';
 import { router,Head,usePage } from '@inertiajs/react';
 
 
-function Items({ auth, items ,wishlists}) {
+function Items({items ,wishlists}) {
 
     const {flash} = usePage().props
     const { errors } = usePage().props
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
+        <AppLayout
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Items</h2>}
         >
             <Head title="Items" />
@@ -40,7 +39,7 @@ function Items({ auth, items ,wishlists}) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </AppLayout>
     );
 }
 
